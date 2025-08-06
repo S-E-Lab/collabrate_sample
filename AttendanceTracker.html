@@ -1,0 +1,80 @@
+ <!--A teacher wants to take attendance using a web interface. 
+ Each student has a name and a checkbox to mark them as "Present". 
+ A "Submit Attendance" button shows the names of all present students in a list. 
+ Tasks: Create a list of 5 student names, each with a checkbox.
+  Use DOM methods to dynamically read the checked boxes when the button is clicked. 
+  Display the list of present students in a
+  using innerHTML. Change the background of the checked student rows using .style.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker</title>
+</head>
+<body>
+    <h1>Attendance Tracker</h1>
+    <div>
+        
+            <div class="sub"><input type="checkbox",value="1">Alex<br></div>
+        
+            <div class="sub"> <input type="checkbox",value="2">Arun <br></div>
+      
+            <div class="sub"><input type="checkbox",value="3">Sam <br></div>
+
+           <div class="sub"> <input type="checkbox",value="4">Sita <br></div>
+       
+            <div class="sub"><input type="checkbox",value="5">Ram <br> </div>
+
+            <button>Submit</button>
+
+    
+        <h3>Present Students</h3>
+        <div id="presentList" style="display:none;"></div>
+        <ul id="presentStudentsList"></ul>
+  
+    </div>
+    <script>
+document.querySelector('button').addEventListener('click', function() {
+            const students = document.querySelectorAll('.sub');
+            let presentStudents = [];
+            students.forEach(student => {
+                const checkbox = student.querySelector('input[type="checkbox"]');
+                if (checkbox.checked) {
+                    presentStudents.push(student.textContent.trim());
+                    student.style.backgroundColor = 'lightgreen'; 
+                } else {
+                    student.style.backgroundColor = ''; 
+                }
+            });
+         });
+
+
+        document.querySelector('button').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('.sub input[type="checkbox"]');
+            const presentList = document.getElementById('presentStudentsList');
+            presentList.innerHTML = ''; // Clear previous list
+            let hasPresent = false;
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    hasPresent = true;
+                    const studentName = checkbox.parentElement.textContent.trim();
+                    const listItem = document.createElement('li');
+                    listItem.textContent = studentName;
+                    presentList.appendChild(listItem);
+                }
+            });
+
+            if (hasPresent) {
+                document.getElementById('presentList').style.display = 'block';
+            } else {
+                document.getElementById('presentList').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+            

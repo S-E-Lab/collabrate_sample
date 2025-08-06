@@ -1,0 +1,141 @@
+<!--
+Scenario: You are building a smart shopping cart system. 
+Each product has an "Add to Cart" button. 
+When a product is added: If it's new, it should appear in the cart.
+If it’s already added, increase its quantity and update its subtotal. 
+The total cart amount should be updated every time.
+Tasks: 1.Display 3 product cards, each having: Product name (e.g., Shirt) Price "Add to Cart" button 
+2. When "Add to Cart" is clicked: Check if item already exists in the cart: 
+If yes: increment its quantity and update subtotal.
+If no: add a new entry. Recalculate the total. Display everything using the DOM.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .products, .cart {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .product-card, .cart-item {
+            border: 1px solid #ccc;
+            padding: 15px;
+            width: 180px;
+            box-shadow: 2px 2px 6px #eee;
+        }
+        .product-card button {
+            margin-top: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .cart-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-item div {
+            margin: 4px 0;
+        }
+        #total {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart Shopping Cart</h1>
+    <div class="products" id="products"></div>
+
+    <h2>Cart</h2>
+    <div class="cart" id="cart"></div>
+    <div id="total">Total: $0.00</div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Shirt", price: 25.00 },
+            { id: 2, name: "Pants", price: 40.00 },
+            { id: 3, name: "TShirt", price: 20.00 }
+        ];
+
+        const cart = [];
+
+        const productsContainer = document.getElementById('products');
+        const cartContainer = document.getElementById('cart');
+        const totalDisplay = document.getElementById('total');
+
+        function renderProducts() {
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                const name = document.createElement('div');
+                name.textContent = product.name;
+                card.appendChild(name);
+
+                const price = document.createElement('div');
+                price.textContent = `Price: $${product.price.toFixed(2)}`;
+                card.appendChild(price);
+
+                const button = document.createElement('button');
+                button.textContent = 'Add to Cart';
+                button.addEventListener('click', () => addToCart(product));
+                card.appendChild(button);
+
+                productsContainer.appendChild(card);
+            });
+        }
+
+        function addToCart(product) {
+            const cartItem = cart.find(item => item.id === product.id);
+            if (cartItem) {
+                cartItem.quantity++;
+                cartItem.subtotal = cartItem.quantity * cartItem.price;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    subtotal: product.price
+                });
+            }
+            renderCart();
+        }
+
+        function renderCart() {
+            cartContainer.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+
+                const name = document.createElement('div');
+                name.textContent = item.name;
+                itemDiv.appendChild(name);
+
+                const quantity = document.createElement('div');
+                quantity.textContent = `Quantity: ${item.quantity}`;
+                itemDiv.appendChild(quantity);
+
+                const subtotal = document.createElement('div');
+                subtotal.textContent = `Subtotal: $${item.subtotal.toFixed(2)}`;
+                itemDiv.appendChild(subtotal);
+
+                cartContainer.appendChild(itemDiv);
+
+                total += item.subtotal;
+            });
+            totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        renderProducts();
+    </script>
+</body>
+</html>

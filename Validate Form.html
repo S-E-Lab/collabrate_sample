@@ -1,0 +1,94 @@
+<!--
+Scenario:
+In a form, highlight fields on focus, and validate (e.g., check email format) on blur.
+
+ Tasks:
+
+On focus, change the border color.
+
+On blur, check if the value is valid; show a message accordingly.
+
+Use classList or .style to apply changes.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Form Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            padding: 8px;
+            font-size: 1em;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #007BFF;
+        }
+        .valid {
+            border-color: #28a745 !important;
+        }
+        .invalid {
+            border-color: #dc3545 !important;
+        }
+        #message {
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+        #message.valid {
+            color: #28a745;
+        }
+        #message.invalid {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Email Validation Form</h1>
+    <form id="email-form" novalidate>
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" name="email" placeholder="Enter your email" />
+        <div id="message"></div>
+    </form>
+
+    <script>
+        const emailInput = document.getElementById('email');
+        const messageDiv = document.getElementById('message');
+
+        emailInput.addEventListener('focus', () => {
+            emailInput.classList.remove('valid', 'invalid');
+            messageDiv.textContent = '';
+            messageDiv.className = '';
+        });
+
+        emailInput.addEventListener('blur', () => {
+            const email = emailInput.value.trim();
+            if (email === '') {
+                emailInput.classList.remove('valid', 'invalid');
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+                return;
+            }
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailPattern.test(email)) {
+                emailInput.classList.add('valid');
+                emailInput.classList.remove('invalid');
+                messageDiv.textContent = 'Valid email address.';
+                messageDiv.className = 'valid';
+            } else {
+                emailInput.classList.add('invalid');
+                emailInput.classList.remove('valid');
+                messageDiv.textContent = 'Invalid email address.';
+                messageDiv.className = 'invalid';
+            }
+        });
+    </script>
+</body>
+</html>
