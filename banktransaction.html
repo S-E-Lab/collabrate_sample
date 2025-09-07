@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank Transaction</title>
+</head>
+<body>
+  <h2>Bank Transaction</h2>
+  <div id="result"></div>
+
+  <script>
+    function verifyAccount() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.9 ? resolve("Account Verified") : reject("Transaction Failed");
+        }, 1000);
+      });
+    }
+
+    function deductAmount() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.9 ? resolve("Amount Deducted") : reject("Transaction Failed");
+        }, 2000);
+      });
+    }
+
+    function updateLedger() {
+      return new Promise(resolve => {
+        setTimeout(() => resolve("Ledger Updated"), 1000);
+      });
+    }
+
+    function sendSMS() {
+      return new Promise(resolve => {
+        setTimeout(() => resolve("Transaction Completed: SMS Sent"), 1000);
+      });
+    }
+
+    verifyAccount()
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+        return deductAmount();
+      })
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+        return updateLedger();
+      })
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+        return sendSMS();
+      })
+      .then(res => {
+        document.getElementById("result").innerHTML += res;
+      })
+      .catch(err => {
+        document.getElementById("result").innerHTML = err;
+      });
+  </script>
+</body>
+</html>

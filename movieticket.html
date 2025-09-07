@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Movie Booking</title>
+</head>
+<body>
+  <h2>Movie Ticket Booking</h2>
+  <div id="result"></div>
+
+  <script>
+    function selectMovie() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.8 ? resolve("Movie Selected") : reject("Booking Failed");
+        }, 1000);
+      });
+    }
+
+    function makePayment() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.8 ? resolve("Payment Successful") : reject("Booking Failed");
+        }, 2000);
+      });
+    }
+
+    function sendConfirmation() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.8 ? resolve("Ticket Sent to Email") : reject("Booking Failed");
+        }, 1000);
+      });
+    }
+
+    selectMovie()
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+        return makePayment();
+      })
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+        return sendConfirmation();
+      })
+      .then(res => {
+        document.getElementById("result").innerHTML += res + "<br>";
+      })
+      .catch(err => {
+        document.getElementById("result").innerHTML = err;
+      });
+  </script>
+</body>
+</html>

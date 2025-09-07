@@ -1,0 +1,280 @@
+<!--
+Online Food Ordering System
+Scenario:
+You are required to build a web-based food ordering system that allows users to browse a menu, place an order, and track order status until it is delivered.
+Requirements:
+1.	Menu & Order Form (HTML + CSS)
+o	Create a menu with at least 3 food items (e.g., Pizza, Burger, Fries) each having a name, price, and “Add to Cart” button.
+o	Show the cart section with:
+	List of ordered items
+	Total price
+	“Place Order” button
+o	Style the page with CSS for a clean layout.
+2.	Data Handling (Functions, Objects, Arrays)
+o	Represent menu items as an array of objects, each containing:
+	Item ID
+	Name
+	Price
+o	Maintain the cart as an array of objects (item + quantity).
+o	Use functions to calculate the total price dynamically.
+3.	Date Object
+o	Show the order placed time when the user clicks “Place Order”.
+4.	DOM Manipulation & Event Handling
+o	Add items to the cart using button click events.
+o	Display cart contents dynamically inside a <ul> or <table>.
+o	Update total price in real time.
+o	On “Place Order”, clear the cart and show order confirmation in DOM.
+5.	BOM
+o	Use an alert (window.alert) to confirm when order is placed.
+o	Display a confirmation prompt before refreshing/closing page (beforeunload).
+6.	Asynchronous Operations
+o	Simulate order processing using setInterval.
+o	Order status should change every 3 seconds in sequence:
+	Order Placed → Preparing → Out for Delivery → Delivered
+7.	Callbacks
+o	Implement a callback to update the cart total whenever an item is added.
+8.	Promises
+o	When the user clicks “Place Order”:
+	Create a promise that resolves if the cart has items.
+	Rejects if the cart is empty (show error message in DOM).
+9.	Async/Await
+o	Simulate waiting for server confirmation using async/await.
+o	Example: After placing the order, wait 2 seconds before confirming “Order Accepted”.
+Expected Outcome:
+•	User adds food items to the cart → cart updates dynamically with total.
+•	On “Place Order”:
+o	If cart is empty → show error.
+o	If items are present → show confirmation with order time.
+o	Status updates asynchronously until “Delivered”.
+•	User can cancel the order anytime.
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Food Ordering System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+    }
+
+    .menu, .cart {
+      width: 45%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #999;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #cartItems {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #cartItems li {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .status {
+      font-weight: bold;
+      color: blue;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2> Online Food Ordering System</h2>
+
+  <div class="container">
+    <!-- Menu -->
+    <div class="menu">
+      <h3>Menu</h3>
+      <div class="menu-item">
+        <span>Pizza - ₹150</span>
+        <button onclick="addToCart(1)">Add to Cart</button>
+      </div>
+      <div class="menu-item">
+        <span>Burger - ₹80</span>
+        <button onclick="addToCart(2)">Add to Cart</button>
+      </div>
+      <div class="menu-item">
+        <span>Fries - ₹60</span>
+        <button onclick="addToCart(3)">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Cart -->
+    <div class="cart">
+      <h3>Your Cart</h3>
+      <ul id="cartItems"></ul>
+      <p><b>Total:</b> ₹<span id="total">0</span></p>
+      <button id="placeOrderBtn">Place Order</button>
+      <button id="cancelOrderBtn" style="display:none; background-color:red;">Cancel Order</button>
+      <div id="orderDetails"></div>
+    </div>
+  </div>
+
+  <script>
+    // Menu Data
+    const menu = [
+      { id: 1, name: "Pizza", price: 150 },
+      { id: 2, name: "Burger", price: 80 },
+      { id: 3, name: "Fries", price: 60 }
+    ];
+
+    // Cart
+    let cart = [];
+
+    const cartItemsUl = document.getElementById("cartItems");
+    const totalSpan = document.getElementById("total");
+    const orderDetailsDiv = document.getElementById("orderDetails");
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+    const cancelOrderBtn = document.getElementById("cancelOrderBtn");
+
+    // 🔹 Callback: update cart total
+    function updateCartTotal() {
+      let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      totalSpan.textContent = total;
+    }
+
+    // Add to Cart
+    function addToCart(id) {
+      const item = menu.find(m => m.id === id);
+      const existing = cart.find(c => c.id === id);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ ...item, quantity: 1 });
+      }
+      renderCart();
+      updateCartTotal(); // callback
+    }
+
+    // Render Cart
+    function renderCart() {
+      cartItemsUl.innerHTML = "";
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`;
+        cartItemsUl.appendChild(li);
+      });
+    }
+
+    // 🔹 Promise: Check cart before placing order
+    function checkCart() {
+      return new Promise((resolve, reject) => {
+        if (cart.length > 0) {
+          resolve();
+        } else {
+          reject("Your cart is empty!");
+        }
+      });
+    }
+
+    // 🔹 Async/Await: Place Order
+    async function placeOrder() {
+      try {
+        await checkCart();
+        orderDetailsDiv.innerHTML = `<p> Processing order...</p>`;
+
+        // Wait 2s to simulate server confirmation
+        await new Promise(res => setTimeout(res, 2000));
+
+        const orderTime = new Date().toLocaleString();
+        orderDetailsDiv.innerHTML = `
+          <h4> Order Accepted</h4>
+          <p><b>Time:</b> ${orderTime}</p>
+          <p class="status" id="orderStatus">Order Placed</p>
+        `;
+
+        window.alert("Your order has been placed! ");
+
+        cancelOrderBtn.style.display = "inline-block";
+
+        // Simulate order status
+        let statuses = ["Preparing", "Out for Delivery", "Delivered"];
+        let i = 0;
+        let interval = setInterval(() => {
+          if (i < statuses.length) {
+            document.getElementById("orderStatus").textContent = statuses[i];
+            i++;
+          } else {
+            clearInterval(interval);
+            cancelOrderBtn.style.display = "none";
+            cart = []; // clear cart
+            renderCart();
+            updateCartTotal();
+          }
+        }, 3000);
+
+      } catch (err) {
+        orderDetailsDiv.innerHTML = `<p class="error">⚠ ${err}</p>`;
+      }
+    }
+
+    // Cancel Order
+    function cancelOrder() {
+      cart = [];
+      renderCart();
+      updateCartTotal();
+      orderDetailsDiv.innerHTML = `<p class="error"> Order Cancelled</p>`;
+      cancelOrderBtn.style.display = "none";
+    }
+
+    // Event Listeners
+    placeOrderBtn.addEventListener("click", placeOrder);
+    cancelOrderBtn.addEventListener("click", cancelOrder);
+
+    // BOM: Warn before refresh/close
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "Are you sure you want to leave? Your order will be lost!";
+    });
+  </script>
+</body>
+</html>

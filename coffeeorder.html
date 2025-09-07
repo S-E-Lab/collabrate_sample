@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coffee Order</title>
+</head>
+<body>
+  <h2>Coffee Ordering System</h2>
+  <button onclick="order()">Order Coffee</button>
+  <div id="result"></div>
+
+  <script>
+    function orderCoffee() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          Math.random() < 0.8
+            ? resolve("[Coffee] Coffee Ready")
+            : reject("[Error] Coffee Machine Error");
+        }, 2000);
+      });
+    }
+
+    function order() {
+      orderCoffee()
+        .then(res => document.getElementById("result").innerHTML = res)
+        .catch(err => document.getElementById("result").innerHTML = err);
+    }
+  </script>
+</body>
+</html>

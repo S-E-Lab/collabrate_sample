@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .para{
+            color:aqua;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <p class="para">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla error minima voluptatibus tenetur impedit voluptates doloremque optio vel est, non iure laboriosam ab libero consequatur possimus nobis cupiditate minus similique!</p>
+    <button class="button">click me!</button>
+</body>
+<script>
+    const btn=document.querySelector(".button");
+    const para=document.querySelector(".para");
+    btn.addEventListener("click",()=>{
+       
+        para.style.color='red';
+        para.style.fontSize='35px';
+    });
+</script>
+</html>

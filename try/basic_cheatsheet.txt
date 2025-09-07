@@ -1,0 +1,132 @@
+==============================
+     JAVASCRIPT CHEAT SHEET
+==============================
+
+------------------------------
+1. VARIABLES
+------------------------------
+let name = "John";   // block-scoped
+const pi = 3.14;     // constant
+var age = 25;        // function-scoped (avoid using)
+
+------------------------------
+2. LOOPS
+------------------------------
+// For loop
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+// While loop
+let i = 0;
+while (i < 5) {
+    console.log(i);
+    i++;
+}
+
+// Do-while loop
+let j = 0;
+do {
+    console.log(j);
+    j++;
+} while (j < 5);
+
+// For-of (iterates over values of iterable)
+const arr = [10, 20, 30];
+for (const num of arr) {
+    console.log(num);
+}
+
+// For-in (iterates over object keys/indexes)
+const obj = {a: 1, b: 2};
+for (const key in obj) {
+    console.log(key, obj[key]);
+}
+
+------------------------------
+3. ARRAYS
+------------------------------
+let arr = [1, 2, 3, 4];
+let emptyArr = [];
+
+// Access
+arr[0];   // 1
+
+// Length
+arr.length;  // 4
+
+// Add/Remove
+arr.push(5);      // add at end
+arr.pop();        // remove from end
+arr.unshift(0);   // add at start
+arr.shift();      // remove from start
+
+// Find elements
+arr.includes(2);   // true/false
+arr.indexOf(3);    // returns index or -1
+
+------------------------------
+4. ARRAY METHODS
+------------------------------
+// Iteration
+arr.forEach(item => console.log(item));
+
+// Transformation
+let doubled = arr.map(item => item * 2);
+
+// Filtering
+let even = arr.filter(item => item % 2 === 0);
+
+// Reduction
+let sum = arr.reduce((acc, val) => acc + val, 0);
+
+// Sorting
+arr.sort((a, b) => a - b);  // ascending
+arr.sort((a, b) => b - a);  // descending
+
+// Find
+arr.find(item => item > 2);
+
+// Remove duplicates
+let unique = [...new Set(arr)];
+
+------------------------------
+5. FUNCTIONS
+------------------------------
+// Function declaration
+function greet(name) {
+    return "Hello " + name;
+}
+
+// Function expression
+const greet2 = function(name) {
+    return "Hello " + name;
+}
+
+// Arrow function
+const greet3 = name => "Hello " + name;
+
+// Immediately Invoked Function Expression (IIFE)
+(function() {
+    console.log("IIFE");
+})();
+
+------------------------------
+6. OTHER COMMON METHODS
+------------------------------
+// String methods
+let str = "Hello World";
+str.toLowerCase();
+str.toUpperCase();
+str.split(" ");
+str.includes("Hello");
+
+// Number methods
+Number("123");   // 123
+parseInt("10");  // 10
+parseFloat("10.5"); // 10.5
+
+// Object methods
+Object.keys(obj);    // ['a','b']
+Object.values(obj);  // [1,2]
+Object.entries(obj); // [['a',1], ['b',2]]

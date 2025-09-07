@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOM Selecting Practice</title>
+</head>
+<body>
+  <h1 id="main-title">Welcome to DOM</h1>
+  <div class="container">
+    <p class="info">This is paragraph 1</p>
+    <p class="info">This is paragraph 2</p>
+    <p>This is paragraph 3</p>
+    <button id="myBtn">Click Me</button>
+  </div>
+</body>
+<script>
+    let h1=document.getElementById("main-title")
+   console.log(h1.textContent);
+   const info=document.getElementsByClassName("info");
+   console.log(info[0].textContent);
+   const para=document.querySelector("p:last-of-type");
+   console.log(para.textContent);
+   const container=document.querySelector(".container");
+   console.log(container.children[3].textContent);
+</script>
+</html>

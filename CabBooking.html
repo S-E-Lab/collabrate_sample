@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cab Booking</title>
+  <style>
+    .box {
+      width: 400px;
+      border-radius: 10px;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 5% auto;
+      text-align: center;
+      box-shadow: 0px 0px 10px #999;
+      font-family: Arial, sans-serif;
+    }
+
+    input, select, button {
+      margin: 10px 0;
+      padding: 8px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #details {
+      margin-top: 20px;
+      text-align: left;
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px #ccc;
+    }
+
+    .status {
+      font-weight: bold;
+      color: blue;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <label for="passenger">Passenger Name:</label><br>
+    <input type="text" id="passenger" name="passenger"><br>
+
+    <label for="pickup">Pickup Location:</label><br>
+    <select name="PickupLocation" id="pickup">
+      <option value="">--Select Pickup--</option>
+      <option value="Narayanguda">Narayanguda</option>
+      <option value="LB Nagar">LB Nagar</option>
+      <option value="RTC X Roads">RTC X Roads</option>
+      <option value="Miyapur">Miyapur</option>
+    </select>
+    <br>
+
+    <label for="drop">Drop Location:</label><br>
+    <select name="DropLocation" id="drop">
+      <option value="">--Select Drop--</option>
+      <option value="Narayanguda">Narayanguda</option>
+      <option value="LB Nagar">LB Nagar</option>
+      <option value="RTC X Roads">RTC X Roads</option>
+      <option value="Miyapur">Miyapur</option>
+    </select>
+    <br>
+
+    <button id="bookBtn">Book Cab!</button>
+    <button id="cancelBtn" style="display:none; background-color: red;">Cancel Ride</button>
+
+    <div id="details"></div>
+  </div>
+
+  <script>
+    //  Array of available cabs
+    let cabs = [
+      { id: 1, driver: "Ramesh", status: "Available" },
+      { id: 2, driver: "Suresh", status: "Available" },
+      { id: 3, driver: "Mahesh", status: "Available" }
+    ];
+
+    const bookBtn = document.getElementById("bookBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const detailsDiv = document.getElementById("details");
+
+    // 🔹 Promise: Check cab availability
+    function checkCabAvailability() {
+      return new Promise((resolve, reject) => {
+        const availableCab = cabs.find(cab => cab.status === "Available");
+        if (availableCab) {
+          resolve(availableCab);
+        } else {
+          reject("No cab available!");
+        }
+      });
+    }
+
+    // 🔹 Callback: Update ride status
+    function updateRideStatus(callback) {
+      let statuses = ["Cab Assigned", "Cab Arriving", "Ride Started", "Ride Completed"];
+      let i = 0;
+      let interval = setInterval(() => {
+        if (i < statuses.length) {
+          callback(statuses[i]);
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 3000);
+    }
+
+    // 🔹 Async/Await: Book Cab
+    async function bookCab() {
+      const passenger = document.getElementById("passenger").value.trim();
+      const pickup = document.getElementById("pickup").value;
+      const drop = document.getElementById("drop").value;
+
+      // Validation
+      if (!passenger || !pickup || !drop) {
+        detailsDiv.innerHTML = `<p class="error"> Please fill all fields!</p>`;
+        return;
+      }
+
+      try {
+        const cab = await checkCabAvailability();
+        cab.status = "Booked";
+
+        const bookingTime = new Date().toLocaleString();
+
+        // Show details
+        detailsDiv.innerHTML = `
+          <h3>Booking Confirmed </h3>
+          <p><b>Passenger:</b> ${passenger}</p>
+          <p><b>Driver:</b> ${cab.driver}</p>
+          <p><b>Pickup:</b> ${pickup}</p>
+          <p><b>Drop:</b> ${drop}</p>
+          <p><b>Time:</b> ${bookingTime}</p>
+          <p class="status" id="rideStatus">Cab Assigned</p>
+        `;
+
+        window.alert("Your cab has been booked!");
+
+        // Show cancel button
+        cancelBtn.style.display = "inline-block";
+
+        // Update ride status
+        updateRideStatus(status => {
+          document.getElementById("rideStatus").textContent = status;
+          if (status === "Ride Completed") {
+            cab.status = "Available"; // reset cab
+            cancelBtn.style.display = "none";
+          }
+        });
+
+      } catch (error) {
+        detailsDiv.innerHTML = `<p class="error">${error}</p>`;
+      }
+    }
+
+    // Cancel Ride
+    function cancelRide() {
+      detailsDiv.innerHTML = `<p class="error"> Ride Cancelled</p>`;
+      cancelBtn.style.display = "none";
+      // reset all booked cabs to available
+      cabs.forEach(cab => {
+        if (cab.status === "Booked") cab.status = "Available";
+      });
+    }
+
+    // Event listeners
+    bookBtn.addEventListener("click", bookCab);
+    cancelBtn.addEventListener("click", cancelRide);
+
+    // BOM: Warn before refresh/close
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "Are you sure you want to leave? Your ride will be cancelled!";
+    });
+  </script>
+</body>
+</html>

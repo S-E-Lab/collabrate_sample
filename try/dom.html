@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="box">
+        this is a div 
+        <ul>
+            <li>item1</li>
+            <li>item2</li>
+            <li>item3</li>
+        </ul>
+        <!--Add submit button here-->
+    </div>
+    <p name="para"> this is paragraph</p>
+    <script>
+        let div=document.querySelector('div');
+        let class_name=div.getAttribute('class'); //box
+        console.log(class_name);
+
+        let p=document.querySelector('p');
+        console.log("before updating the name attribute: "+p.getAttribute('name'));
+
+        p.setAttribute('name','123');
+        console.log("after updating the name attribute: "+p.getAttribute('name'));
+
+        // CREATING AN ELEMENT
+        let newButton=document.createElement("button");
+        console.log(newButton.innerText='submit');
+
+        let newpara=document.createElement('p');
+        newpara.innerText= "this is a new para added in script tags";
+        
+        let newButton1=document.createElement("button");
+        newButton1.innerText='before()btn'
+        let newButton2=document.createElement("button");
+        newButton2.innerText='before()btn'
+        //ADDING ELEMNT TO DOM
+        div.append(newButton); //adds element at end of the div
+
+        div.prepend(newpara); //add element at start of the node (syntax: node.prepend(newElement) )
+
+        div.before(newButton1); //this methods add the element before the div
+
+        div.after(newButton2); //this methods add the element after the div
+        
+        //REMOVE ELEMENTS FROM DOMf
+
+</script>
+</body>
+</html>
