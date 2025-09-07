@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Joke</title>
+</head>
+<body>
+  <h2>Get a Random Joke</h2>
+  <button id="jokeBtn">Get Joke</button>
+  <div id="joke"></div>
+
+  <script>
+    document.getElementById("jokeBtn").addEventListener("click", () => {
+      fetch("https://official-joke-api.appspot.com/random_joke")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("joke").innerHTML = data.setup + "<br>" + data.punchline;
+        })
+        .catch(() => {
+          document.getElementById("joke").innerHTML = "Oops! Could not fetch joke.";
+        });
+    });
+  </script>
+</body>
+</html>

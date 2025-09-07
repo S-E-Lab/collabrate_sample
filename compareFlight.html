@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Price Comparison</title>
+</head>
+<body>
+  <h2>Compare Flight Prices</h2>
+  <button onclick="compareFlights()">Check Flights</button>
+  <p id="result"></p>
+
+  <script>
+    // Function to simulate API call
+    function fetchFlight(apiName, price, delay, shouldFail = false) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (shouldFail) {
+            reject(`${apiName} failed`);
+          } else {
+            resolve({ apiName, price });
+          }
+        }, delay);
+      });
+    }
+
+    async function compareFlights() {
+      const resultElement = document.getElementById("result");
+      resultElement.textContent = "Fetching flight prices...";
+
+      try {
+        // Simulating 3 APIs
+        const flights = await Promise.all([
+          fetchFlight("API1", 5000, 1000), // resolves in 1s
+          fetchFlight("API2", 4500, 1500), // resolves in 1.5s
+          fetchFlight("API3", 4800, 2000)  // resolves in 2s
+        ]);
+
+        // Find cheapest price
+        const cheapest = flights.reduce((min, f) => f.price < min.price ? f : min);
+        resultElement.textContent = `Cheapest Flight: ₹${cheapest.price}`;
+      } catch (error) {
+        resultElement.textContent = "Could not fetch all prices";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .products {
+        display: flex;            /* makes children side by side */
+        gap: 10px;                /* space between items */
+        justify-content: flex-start; /* align left (or use center / space-between) */
+    }
+
+    .box{
+        background-color: rgba(199, 173, 230, 0.998);
+        padding: 20px;
+        flex: 1;                  /* all items take equal width */
+        text-align: center;
+        border: 1px solid #000;
+        border-radius: 5px; 
+    }
+
+    </style>
+</head>
+<body>
+    <div class="products">
+    <div class="box">
+        <img src="https://www.pinterest.com/ideas/apple-images/925763766497/" alt="Apple">
+        <h3>Apple</h3>
+        <h5>$35</h5>
+        <button class="cart-btn">add to cart</button>
+    </div>
+    <div class="box">
+        <img src="https://stock.adobe.com/search?k=still+life+fruit" alt="banana">
+        <h3>Banana</h3>
+        <h5>$5</h5>
+        <button class="cart-btn">add to cart</button>
+    </div>
+    <div class="box">
+        <img src="https://stock.adobe.com/search?k=still+life+fruit" alt="guva">
+        <h3>Guva</h3>
+        <h5>$20</h5>
+        <button class="cart-btn">add to cart</button>
+    </div>
+    <div class="box">
+        <img src="https://stock.adobe.com/search?k=still+life+fruit" alt="grapes">
+        <h3>Grapes</h3>
+        <h5>$30</h5>
+        <button class="cart-btn">add to cart</button>
+    </div>
+    </div>
+    <div class="cart">
+        <h3>Cart Items</h3>
+        <div class="cartitems">
+
+        </div>
+    </div>
+</body>
+<script>
+    const buttons = document.querySelectorAll(".cart-btn");
+let cart = {}; // Use an object to track products
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const productName = btn.parentElement.querySelector("h3").innerText;
+    const price = parseFloat(
+      btn.parentElement.querySelector("h5").innerText.replace("$", "")
+    );
+
+    // Check if product is already in cart
+    if (cart[productName]) {
+      cart[productName].quantity += 1;
+      cart[productName].total = cart[productName].quantity * price;
+    } else {
+      cart[productName] = { price: price, quantity: 1, total: price };
+    }
+
+    // Update cart display
+    const cartDiv = document.querySelector(".cartitems");
+    cartDiv.innerHTML = ""; // clear previous display
+    for (let item in cart) {
+      const div = document.createElement("div");
+      div.innerText = `${item} - $${cart[item].price} x ${cart[item].quantity} = $${cart[item].total}`;
+      cartDiv.appendChild(div);
+    }
+  });
+});
+
+</script>
+</html>

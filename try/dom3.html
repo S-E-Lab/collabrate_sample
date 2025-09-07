@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOM Manipulation Practice</title>
+</head>
+<body>
+  <h1 id="main-title">Old Title</h1>
+  <p id="desc">This is an old description.</p>
+  <img id="myImage" src="old.png" alt="Old Image">
+  <button id="changeBtn">Change Content</button>
+</body>
+<script>
+  // 👉 Write your JavaScript here
+    const h1=document.getElementById("main-title");
+    console.log(h1.textContent);
+    h1.innerText="New Title using JS";
+    const p=document.getElementById("desc");
+    p.textContent="Description updated!";
+    const img=document.getElementById("myImage");
+    img.setAttribute("src","new.png");
+    const newpara=document.createElement("p");
+    newpara.textContent="This is dynamically added.";
+    newpara.setAttribute("id","newPara");
+    document.body.appendChild(newpara);
+</script>
+</html>

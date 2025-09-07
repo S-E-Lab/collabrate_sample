@@ -1,0 +1,173 @@
+==============================
+      JAVASCRIPT DOM CHEAT SHEET
+        (CRUD + Dynamic)
+==============================
+
+------------------------------
+1. SELECTING ELEMENTS
+------------------------------
+// By ID
+const element = document.getElementById("myId");
+
+// By Class
+const elements = document.getElementsByClassName("myClass"); // HTMLCollection
+const elementsArr = Array.from(elements); // convert to array
+
+// By Tag
+const divs = document.getElementsByTagName("div"); // HTMLCollection
+
+// By Query Selector
+const first = document.querySelector(".myClass"); // first match
+const all = document.querySelectorAll(".myClass"); // NodeList of all matches
+
+------------------------------
+2. GET / SET CONTENT
+------------------------------
+// Read text / HTML
+console.log(element.textContent);
+console.log(element.innerHTML);
+
+// Update text / HTML
+element.textContent = "Hello World";
+element.innerHTML = "<p>Hello World</p>";
+
+// Read / set input value
+const input = document.querySelector("input");
+console.log(input.value);
+input.value = "Type here";
+
+------------------------------
+3. STYLES & CLASSES
+------------------------------
+// Inline styles
+element.style.color = "red";
+element.style.fontSize = "20px";
+
+// Class manipulation
+element.classList.add("active");
+element.classList.remove("hidden");
+element.classList.toggle("visible");
+element.classList.contains("active"); // true / false
+
+------------------------------
+4. CREATING ELEMENTS (CREATE)
+------------------------------
+// Create element
+const div = document.createElement("div");
+div.textContent = "New div";
+div.setAttribute("id","newDiv");
+div.classList.add("box");
+
+// Append to parent
+document.body.appendChild(div);
+
+// Insert before
+const parent = document.getElementById("parent");
+parent.insertBefore(div, parent.firstChild);
+
+------------------------------
+5. READING ELEMENTS (READ)
+------------------------------
+// Read content
+console.log(div.textContent);
+console.log(div.innerHTML);
+
+// Read attributes / styles
+console.log(div.getAttribute("id"));
+console.log(div.style.color);
+
+// Traverse DOM
+div.parentNode;
+div.children;
+div.firstElementChild;
+div.lastElementChild;
+div.nextElementSibling;
+div.previousElementSibling;
+
+------------------------------
+6. UPDATING ELEMENTS (UPDATE)
+------------------------------
+// Update text / HTML
+div.textContent = "Updated text";
+div.innerHTML = "<strong>Updated HTML</strong>";
+
+// Update attributes / styles
+div.setAttribute("id","updatedDiv");
+div.style.backgroundColor = "yellow";
+
+// Update classes
+div.classList.add("highlight");
+div.classList.remove("box");
+div.classList.toggle("active");
+
+------------------------------
+7. DELETING ELEMENTS (DELETE)
+------------------------------
+div.remove();                   // remove element
+parent.removeChild(div);         // remove via parent
+
+------------------------------
+8. EVENTS
+------------------------------
+// Add event listener
+element.addEventListener("click", function() {
+    console.log("Clicked!");
+});
+
+// Remove event listener
+function handleClick() { console.log("Click"); }
+element.addEventListener("click", handleClick);
+element.removeEventListener("click", handleClick);
+
+// Common events
+// click, dblclick, mouseover, mouseout, keydown, keyup, submit, change, input
+
+// Event delegation
+document.body.addEventListener("click", function(e) {
+    if(e.target.classList.contains("btn")) {
+        console.log("Button clicked");
+    }
+});
+
+------------------------------
+9. FORMS & DYNAMIC VALUES
+------------------------------
+// Get / set input value
+const nameInput = document.querySelector("#name");
+console.log(nameInput.value);
+nameInput.value = "John";
+
+// Handle form submission
+document.querySelector("form").addEventListener("submit", function(e){
+    e.preventDefault(); // prevent page reload
+    const name = document.querySelector("#name").value;
+    console.log("User entered:", name);
+});
+
+// Add dynamic element from input
+const addBtn = document.querySelector("#addBtn");
+const list = document.querySelector("#list");
+
+addBtn.addEventListener("click", function(){
+    const value = nameInput.value;
+    if(value !== ""){
+        const li = document.createElement("li");
+        li.textContent = value;
+        list.appendChild(li);
+        nameInput.value = ""; // clear input
+    }
+});
+
+------------------------------
+10. OTHER USEFUL METHODS
+------------------------------
+// setAttribute / getAttribute / removeAttribute
+div.setAttribute("data-id","123");
+console.log(div.getAttribute("data-id"));
+div.removeAttribute("data-id");
+
+// innerHTML vs textContent
+// innerHTML parses HTML; textContent is plain text
+
+// clone node
+const clone = div.cloneNode(true); // true = deep clone

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Price</title>
+</head>
+<body>
+  <h2>Stock Price Average</h2>
+  <div id="result"></div>
+
+  <script>
+    function fetchStockPrice(apiName, price, delay, fail=false) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (!fail) {
+            resolve(price);
+          } else {
+            reject("Error: Could not fetch stock data");
+          }
+        }, delay);
+      });
+    }
+
+    Promise.all([
+      fetchStockPrice("API1", 100, 1000),
+      fetchStockPrice("API2", 102, 1500),
+      fetchStockPrice("API3", 101, 2000)
+    ])
+    .then(prices => {
+      let avg = prices.reduce((a,b)=>a+b,0)/prices.length;
+      document.getElementById("result").innerHTML = "Average Price: " + avg;
+    })
+    .catch(err => {
+      document.getElementById("result").innerHTML = err;
+    });
+  </script>
+</body>
+</html>

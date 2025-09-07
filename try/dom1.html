@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My DOM Practice</title>
+</head>
+<body>
+  <h1>Hello DOM</h1>
+  <p>Paragraph One</p>
+  <p>Paragraph Two</p>
+  <p>Paragraph Three</p>
+  <div id="box">
+  Hello <span style="display:none">World</span>
+</div>
+
+</body>
+<script>
+    console.log(document.title);
+    console.log(document.URL);
+    console.log(document.getElementById("box").textContent);
+  // Output: "Hello World"
+    console.log(document.getElementById("box").innerText);
+  // Output: "Hello"
+</script>
+</html>

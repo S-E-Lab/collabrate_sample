@@ -1,0 +1,117 @@
+1. DOM Basics
+
+What the DOM is (tree structure of HTML documents).
+
+Difference between HTML, CSSOM, DOM, and BOM (Browser Object Model).
+
+Understanding nodes, elements, attributes, text nodes.
+
+How the browser parses HTML into the DOM.
+
+🔹 2. Selecting & Traversing Elements
+
+document.getElementById()
+
+document.getElementsByClassName()
+
+document.getElementsByTagName()
+
+document.querySelector() / document.querySelectorAll() ✅ (modern, most used).
+
+Traversing:
+
+parentNode, children, firstElementChild, lastElementChild
+
+nextElementSibling, previousElementSibling
+
+🔹 3. Manipulating Elements & Content
+
+Changing text:
+
+element.textContent
+
+element.innerText
+
+element.innerHTML (⚠️ safe vs unsafe usage)
+
+Changing attributes:
+
+setAttribute(), getAttribute(), removeAttribute()
+
+Working with classes/styles:
+
+element.classList.add/remove/toggle/contains()
+
+element.style.property = "value"
+
+🔹 4. Creating & Removing Elements
+
+document.createElement()
+
+document.createTextNode()
+
+element.appendChild()
+
+element.append(), element.prepend() (modern).
+
+element.insertBefore()
+
+element.remove() / parent.removeChild()
+
+🔹 5. Event Handling
+
+Basics of events: click, input, change, keydown, mouseover, etc.
+
+Adding events:
+
+Inline (not recommended).
+
+element.addEventListener("event", handler) ✅ (best practice).
+
+Removing events: removeEventListener().
+
+Event object: event.target, event.type, event.preventDefault().
+
+Event bubbling vs capturing.
+
+Event delegation (attaching one listener to a parent for multiple children).
+
+🔹 6. Forms & User Input
+
+Accessing form fields (value, checked, selected).
+
+Handling form submission (submit event, preventDefault()).
+
+Simple form validation with DOM.
+
+🔹 7. DOM Properties & Dimensions
+
+offsetWidth, offsetHeight
+
+clientWidth, clientHeight
+
+scrollWidth, scrollHeight
+
+getBoundingClientRect()
+
+👉 Needed for animations, UI adjustments, drag/drop.
+
+🔹 8. Advanced DOM Features
+
+dataset (custom data attributes).
+
+closest() (finding nearest ancestor).
+
+matches() (checking selectors).
+
+MutationObserver (watch for DOM changes).
+
+DOMContentLoaded vs window.onload (when scripts run).
+
+🔹 9. Working with CSS via JS
+
+Inline styles (element.style.property).
+
+CSS variables (document.documentElement.style.setProperty("--var", value)).
+
+Changing themes/dark mode toggles.
